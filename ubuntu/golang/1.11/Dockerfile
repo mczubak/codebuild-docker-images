@@ -115,7 +115,10 @@ RUN set -ex \
     && tar -xzf /tmp/golang.tar.gz -C /usr/local \
     && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && wget "https://github.com/golang/dep/releases/download/v$DEP_VERSION/$DEP_BINARY" -O "$GOPATH/bin/dep" \
-    && chmod +x "$GOPATH/bin/dep"
+    && chmod +x "$GOPATH/bin/dep" \
+    && ln -s /usr/local/bin/dockerd-entrypoint.sh /usr/local/bin/dockerd_start
 
 ENV PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
 WORKDIR $GOPATH
+
+ENTRYPOINT ["dockerd-entrypoint.sh"]
